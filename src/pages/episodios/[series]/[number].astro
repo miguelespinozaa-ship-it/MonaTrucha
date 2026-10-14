@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Player from '../../../components/Player.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import Icon from '../../../components/Icon.astro';
+import { getSeries } from '../../../data/catalog';
+export async function getStaticPaths() {
+  return (await getSeries()).flatMap((series) =>
+    series.data.episodes.map((episode, index) => ({
+      params: { series: series.id, number: String(episode.number) },
+      props: { series, episode, index },
+    })),
+  );
+}
+const { series, episode, index } = Astro.props;
+const previous = series.data.episodes[index - 1];
+const next = series.data.episodes[index + 1];
+---
+
+<BaseLayout
+  title={`${series.data.title} · ${episode.title}`}
+  description={`Episodio ${episode.number}: ${episode.title}. ${series.data.placeholder ? 'Historia ficticia de demostración sin vídeo.' : 'Reproductor de fuente oficial y alternativa legal.'}`}
+  noindex={series.data.placeholder}
+  omitNavAds
+>
+  <div
+    class="container"
+    data-current-episode
+    data-series-id={series.id}
+    data-series-title={series.data.title}
+    data-episode={episode.number}
+  >
+    <nav class="breadcrumbs" aria-label="Ruta de navegación">
+      <a href="/catalogo/">Explorar</a>
+      <span aria-hidden="true">/</span>
+      <a href={`/series/${series.id}/`}>{series.data.title}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Episodio {episode.number}</span>
+    </nav>
+    <div class="page-heading">
+      <p class="eyebrow">
+        {series.data.title} · Episodio {String(episode.number).padStart(2, '0')}
+      </p>
+      <h1>{episode.title}</h1>
+    </div>
+    <Player
+      youtubeId={episode.youtubeId}
+      title={`${series.data.title} — ${episode.title}`}
+      placeholder={series.data.placeholder}
+      legalUrl={episode.legalUrl}
+    />
+    <nav class="episode-nav" aria-label="Episodios">
+      {previous ? (
+        <a
+          class="button button-secondary"
+          href={`/episodios/${series.id}/${previous.number}/`}
+        >
+          ← Anterior
+        </a>
+      ) : (
+        <span />
+      )}
+      <a class="button button-secondary" href={`/series/${series.id}/`}>
+        Todos los episodios
+      </a>
+      {next ? (
+        <a
+          class="button button-primary"
+          href={`/episodios/${series.id}/${next.number}/`}
+        >
+          Siguiente
+          <Icon name="arrow" size={18} />
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+    <p class="notice">
+      {series.data.placeholder
+        ? 'Esta muestra no reproduce vídeo. La visita se guarda localmente para que puedas continuar explorando.'
+        : `Regiones revisadas: ${episode.regions.join(', ')}. Canal: ${episode.officialChannel || 'plataforma oficial'}. Si un vídeo se retira, avísanos desde Contacto.`}
+    </p>
+    <div class="player-ad-zone">
+      <AdSlot position="player" format="rectangle" />
+    </div>
+  </div>
+</BaseLayout>

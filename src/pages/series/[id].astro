@@ -1,0 +1,184 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import SeriesCard from '../../components/SeriesCard.astro';
+import { getSeries, getMetadata } from '../../data/catalog';
+import { site } from '../../data/site';
+export async function getStaticPaths() {
+  return (await getSeries()).map((series) => ({
+    params: { id: series.id },
+    props: { series },
+  }));
+}
+const { series } = Astro.props;
+const { Content } = await render(series);
+const metadata = getMetadata(series.data.apiId);
+const related = (await getSeries())
+  .filter((s) => s.id !== series.id)
+  .slice(0, 4);
+const schema = {
+  '@type': 'TVSeries',
+  name: series.data.title,
+  description: series.data.description,
+  url: `${site.url}/series/${series.id}/`,
+  genre: series.data.genres,
+  image: new URL(series.data.cover.src, site.url).href,
+  inLanguage: 'es',
+};
+---
+
+<BaseLayout
+  title={series.data.title}
+  description={series.data.description}
+  image={series.data.hero.src}
+  schema={schema}
+  noindex={series.data.placeholder}
+>
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Ruta de navegación">
+      <a href="/">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <a href="/catalogo/">Explorar</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{series.data.title}</span>
+    </nav>
+    <section class="detail-hero">
+      <Image
+        class="detail-cover"
+        src={series.data.cover}
+        alt={`Portada de ${series.data.title}`}
+        width={500}
+        height={700}
+        format="webp"
+        loading="eager"
+      />
+      <div class="detail-info">
+        <p class="eyebrow">
+          {series.data.placeholder
+            ? 'Ficción · placeholder'
+            : 'Una nueva historia'}
+        </p>
+        <h1>{series.data.title}</h1>
+        <p class="detail-subtitle">{series.data.subtitle}</p>
+        <div class="detail-facts">
+          <span>{series.data.year}</span>
+          <span>{series.data.format}</span>
+          <span>{series.data.duration} min / ep.</span>
+          <span>{series.data.status}</span>
+        </div>
+        <div class="detail-tags">
+          {series.data.genres.map((genre) => (
+            <a
+              class="pill"
+              href={`/catalogo/?genero=${encodeURIComponent(genre)}`}
+            >
+              {genre}
+            </a>
+          ))}
+        </div>
+        <div class="detail-actions">
+          {series.data.episodes[0] && (
+            <a
+              class="button button-primary"
+              href={`/episodios/${series.id}/${series.data.episodes[0].number}/`}
+            >
+              <Icon name="play" size={18} />
+              {series.data.placeholder ? 'Explorar episodios' : 'Comenzar'}
+            </a>
+          )}
+          <button
+            class="favorite-button"
+            data-favorite={series.id}
+            data-title={series.data.title}
+            aria-label={`Guardar ${series.data.title} en favoritos`}
+            aria-pressed="false"
+          >
+            <Icon name="heart" size={18} />
+            Mi lista
+          </button>
+        </div>
+      </div>
+    </section>
+    {series.data.placeholder && (
+      <p class="notice">
+        Historia, capítulos, estado y horario ficticios. Esta ficha no
+        representa una producción real ni ofrece un vídeo.
+      </p>
+    )}
+    <div class="content-with-sidebar">
+      <div>
+        <section class="section">
+          <SectionHeading title="Dentro de esta historia" />
+          <div class="prose">
+            <Content />
+          </div>
+          {metadata && (
+            <details class="notice">
+              <summary>Datos de referencia · Jikan / MyAnimeList</summary>
+              <p>
+                <strong>{metadata.title}</strong>
+              </p>
+              <p>{metadata.synopsis}</p>
+              <p>
+                Géneros: {metadata.genres.join(', ')}. Fuente consultada:{' '}
+                {metadata.fetchedAt.slice(0, 10)}.
+              </p>
+            </details>
+          )}
+        </section>
+        <section class="section">
+          <SectionHeading
+            title="El viaje, episodio a episodio"
+            eyebrow={`${series.data.episodes.length} capítulos de muestra`}
+          />
+          <ol class="episode-list">
+            {series.data.episodes.map((episode) => (
+              <li>
+                <a href={`/episodios/${series.id}/${episode.number}/`}>
+                  <span class="episode-number">
+                    {String(episode.number).padStart(2, '0')}
+                  </span>
+                  <span>
+                    <strong>{episode.title}</strong>
+                    <small>
+                      {series.data.placeholder
+                        ? 'Placeholder · sin vídeo'
+                        : episode.regions.join(', ')}
+                    </small>
+                  </span>
+                  <Icon name="chevron" />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      </div>
+      <aside class="desktop-sidebar">
+        <div class="sidebar-box">
+          <h2>Historias, con respeto.</h2>
+          <p>
+            Solo fuentes oficiales. Si un episodio no está disponible en tu
+            región, consulta su alternativa legal.
+          </p>
+          <a class="section-link" href="/articulos/ver-anime-legalmente/">
+            Cómo elegir una fuente
+            <Icon name="arrow" size={16} />
+          </a>
+          <AdSlot position="sidebar" format="vertical" />
+        </div>
+      </aside>
+    </div>
+    <section class="section">
+      <SectionHeading title="También podría gustarte" href="/catalogo/" />
+      <div class="card-rail">
+        {related.map((item) => (
+          <SeriesCard series={item} />
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

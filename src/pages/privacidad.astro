@@ -1,0 +1,69 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  title="Tu privacidad."
+  description="Qué guardamos, qué proveedores pueden conectarse y cómo decidir."
+>
+  <p class="notice">
+    Política base para desarrollo. Antes de publicar, el titular debe completar
+    identidad, correo, jurisdicción, plazos de conservación y proveedores
+    activos.
+  </p>
+  <h2>En tu navegador</h2>
+  <p>
+    Guardamos el tema elegido, identificadores de favoritos, las últimas fichas
+    de episodio visitadas y tus preferencias de consentimiento en localStorage.
+    El historial conserva hasta veinte series y no mide tiempo de reproducción.
+    No hay cuentas ni sincronización. Puedes borrar el historial desde el inicio
+    y todos los datos desde los ajustes del navegador.
+  </p>
+  <h2>Anuncios y estadísticas</h2>
+  <p>
+    Google AdSense y Cloudflare Web Analytics están desactivados por defecto.
+    Cuando estén configurados, sus scripts solo se cargan después de aceptar la
+    categoría correspondiente. Rechazar bloquea ambas. Las preferencias caducan
+    tras 180 días y pueden modificarse desde el pie; retirar el consentimiento
+    recarga la página para detener recursos activos.
+  </p>
+  <p>
+    Google puede tratar direcciones IP, identificadores y datos de navegación al
+    servir anuncios.{' '}
+    <a
+      href="https://policies.google.com/technologies/ads"
+      rel="noopener noreferrer"
+    >
+      Consulta sus condiciones
+    </a>
+    . Cloudflare describe su servicio en{' '}
+    <a
+      href="https://www.cloudflare.com/privacypolicy/"
+      rel="noopener noreferrer"
+    >
+      su política de privacidad
+    </a>
+    . Antes de activar AdSense donde Google lo exija, integra una plataforma de
+    gestión de consentimiento certificada y su señal TCF.
+  </p>
+  <h2>Vídeos</h2>
+  <p>
+    No se conecta con YouTube hasta pulsar reproducir en una ficha con fuente
+    oficial. Se usa youtube-nocookie.com, el modo de privacidad mejorada, que no
+    elimina todo tratamiento de datos.{' '}
+    <a href="https://policies.google.com/privacy" rel="noopener noreferrer">
+      Política de Google
+    </a>
+    . Las series ficticias no tienen reproductor activo.
+  </p>
+  <h2>Infraestructura y contacto</h2>
+  <p>
+    Cloudflare Pages puede procesar datos técnicos de las peticiones para servir
+    y proteger el sitio. Al contactar por correo, la comunicación se usa para
+    responder. El titular debe detallar la conservación y cómo ejercer los
+    derechos que correspondan a su jurisdicción.
+  </p>
+  <button class="button button-secondary" data-cookie-settings>
+    Configurar preferencias
+  </button>
+</LegalLayout>

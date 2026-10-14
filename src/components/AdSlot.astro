@@ -1,0 +1,33 @@
+---
+import {
+  ADS_ENABLED,
+  ADSENSE_CLIENT_ID,
+  adSlots,
+  type AdPosition,
+} from '../data/site';
+interface Props {
+  position: AdPosition;
+  format?: 'banner' | 'rectangle' | 'vertical' | 'in-article';
+}
+const { position, format = 'banner' } = Astro.props;
+const slot = adSlots[position];
+const active = ADS_ENABLED && /^\d+$/.test(slot);
+const visible = active || import.meta.env.DEV;
+---
+
+{visible && (
+  <aside
+    class:list={['ad-slot', `ad-${format}`, { 'ad-preview': !active }]}
+    aria-label="Publicidad"
+    data-ad-slot={active ? slot : undefined}
+    data-ad-client={active ? ADSENSE_CLIENT_ID : undefined}
+    data-ad-format={format}
+  >
+    <span class="ad-label">Publicidad</span>
+    {active ? (
+      <div class="ad-surface" />
+    ) : (
+      <span class="ad-preview-label">Espacio reservado</span>
+    )}
+  </aside>
+)}

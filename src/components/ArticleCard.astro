@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  article: CollectionEntry<'articles'>;
+  headingLevel?: 'h2' | 'h3';
+}
+const { article, headingLevel: Heading = 'h3' } = Astro.props;
+---
+
+<article class="article-card">
+  <a
+    href={`/articulos/${article.id}/`}
+    class="article-image"
+    aria-label={`Leer ${article.data.title}`}
+  >
+    <Image
+      src={article.data.cover}
+      alt="Ilustración original de una historia ficticia"
+      width={640}
+      height={360}
+      format="webp"
+      loading="lazy"
+    />
+  </a>
+  <div class="card-meta">
+    <span>{article.data.category}</span>
+    <span>{article.data.minutes} min de lectura</span>
+  </div>
+  <Heading class="card-title">
+    <a href={`/articulos/${article.id}/`}>{article.data.title}</a>
+  </Heading>
+  <p>{article.data.description}</p>
+</article>

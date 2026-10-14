@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getArticles } from '../../data/catalog';
+const articles = await getArticles();
+---
+
+<BaseLayout
+  title="Historias, guías y reseñas"
+  description="Lee guías para descubrir anime, reconocer fuentes oficiales y explorar las historias del catálogo."
+>
+  <div class="container">
+    <div class="page-heading">
+      <p class="eyebrow">Más allá del episodio</p>
+      <h1>Historias para curiosos.</h1>
+      <p>Guías, ideas y nuevas formas de mirar. Sin spoilers innecesarios.</p>
+    </div>
+    <p class="notice">
+      Contenido editorial de demostración. Las reseñas de ficciones están
+      identificadas; no reseñamos obras inexistentes como si fueran reales.
+    </p>
+    <div class="home-articles">
+      {articles.map((article) => (
+        <ArticleCard article={article} headingLevel="h2" />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

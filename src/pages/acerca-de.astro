@@ -1,0 +1,33 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { site } from '../data/site';
+---
+
+<LegalLayout
+  title="Un lugar para descubrir."
+  description="Anime, contenido propio y fuentes oficiales. Así entendemos este proyecto."
+>
+  <h2>Historias a tu ritmo</h2>
+  <p>
+    {site.name} propone descubrir anime sin cuentas: catálogo, fichas, guías y
+    calendario. El contenido audiovisual debe proceder de canales oficiales o de
+    enlaces a plataformas legales; nunca alojamos episodios.
+  </p>
+  <h2>Una base en construcción</h2>
+  <p>
+    El catálogo actual reúne cinco historias ficticias con ilustraciones
+    originales. Están marcadas como placeholder y no incluyen vídeos. Los
+    horarios, capítulos y estados son datos de ejemplo. El nombre {site.name} es
+    provisional.
+  </p>
+  <h2>Contenido con criterio</h2>
+  <p>
+    Cada ficha definitiva debe tener texto propio y fuentes verificadas. La
+    disponibilidad depende de las licencias y del país. Los favoritos y las
+    últimas visitas se guardan en el navegador del visitante.
+  </p>
+  <p>
+    Antes del lanzamiento editorial, el equipo debe confirmar país e idioma del
+    público, nombre, responsables y canales de contacto.
+  </p>
+</LegalLayout>

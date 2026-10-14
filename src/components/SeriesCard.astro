@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+interface Props {
+  series: CollectionEntry<'series'>;
+  headingLevel?: 'h2' | 'h3';
+}
+const { series, headingLevel: Heading = 'h3' } = Astro.props;
+---
+
+<article
+  class:list={['series-card', `accent-${series.data.accent}`]}
+  data-series-card
+  data-id={series.id}
+>
+  <div class="cover-wrap">
+    <a href={`/series/${series.id}/`} aria-label={`Ver ${series.data.title}`}>
+      <Image
+        src={series.data.cover}
+        alt={
+          series.data.placeholder
+            ? `Ilustración original de ${series.data.title}, historia ficticia`
+            : `Portada de ${series.data.title}`
+        }
+        widths={[240, 400, 600]}
+        sizes="(max-width: 600px) 44vw, (max-width: 1000px) 30vw, 220px"
+        width={600}
+        height={840}
+        format="webp"
+        loading="lazy"
+      />
+    </a>
+    <span class="cover-label">
+      {series.data.placeholder ? 'Ficción · placeholder' : series.data.status}
+    </span>
+    <button
+      class="favorite-button"
+      data-favorite={series.id}
+      data-title={series.data.title}
+      aria-label={`Guardar ${series.data.title} en favoritos`}
+      aria-pressed="false"
+    >
+      <Icon name="heart" size={18} />
+    </button>
+    <span class="cover-caption" aria-hidden="true">
+      {series.data.subtitle}
+    </span>
+  </div>
+  <div class="card-meta">
+    <span>{series.data.genres[0]}</span>
+    <span>{series.data.year}</span>
+  </div>
+  <Heading class="card-title">
+    <a href={`/series/${series.id}/`}>{series.data.title}</a>
+  </Heading>
+  <p class="card-detail">
+    {series.data.format} <span>·</span> {series.data.status}
+  </p>
+</article>

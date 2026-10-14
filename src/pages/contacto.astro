@@ -1,0 +1,39 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { site } from '../data/site';
+---
+
+<LegalLayout
+  title="Hablemos."
+  description="Ayúdanos a cuidar los enlaces, el contenido y la experiencia."
+>
+  <h2>Consultas y avisos</h2>
+  {site.contact ? (
+    <p>
+      Escríbenos a <a href={`mailto:${site.contact}`}>{site.contact}</a>.
+    </p>
+  ) : (
+    <p class="notice">
+      El correo de contacto está pendiente de configuración. Este proyecto de
+      demostración todavía no dispone de un canal público de atención.
+    </p>
+  )}
+  <p>
+    Para avisar de un enlace roto, indica la URL de la ficha, el episodio y el
+    país desde el que intentas verlo. No necesitamos contraseñas ni datos
+    personales sensibles.
+  </p>
+  <h2>Derechos de autor</h2>
+  <p>
+    Para solicitar una revisión, incluye la dirección afectada, tu relación con
+    la obra y un modo de respuesta. Nuestro objetivo editorial es retirar o
+    corregir enlaces cuestionados en 24 horas; antes del lanzamiento debe
+    existir un responsable para atenderlos.
+  </p>
+  <h2>Sin formulario ni cuentas</h2>
+  <p>
+    Esta página no recopila datos mediante formularios. Si contactas por correo,
+    el titular del sitio tratará esa comunicación para responderte. Debe
+    completar su identidad y política de conservación antes de publicar.
+  </p>
+</LegalLayout>

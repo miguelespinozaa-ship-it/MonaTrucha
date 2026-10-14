@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSeries, days } from '../data/catalog';
+const series = await getSeries();
+const order = [1, 2, 3, 4, 5, 6, 0];
+---
+
+<BaseLayout
+  title="Calendario de anime"
+  description="Consulta el calendario semanal de historias. Los horarios del catálogo inicial son ficticios."
+>
+  <div class="container">
+    <div class="page-heading">
+      <p class="eyebrow">Una semana de historias</p>
+      <h1>Haz sitio a lo que viene.</h1>
+      <p>Tu calendario para volver a descubrir, día a día.</p>
+    </div>
+    <p class="notice">
+      Todos los horarios son ficticios y no anuncian estrenos. Al añadir series
+      reales, indica la zona horaria y confirma la disponibilidad regional.
+    </p>
+    <div class="schedule">
+      {order.map((day) => (
+        <section class="schedule-day">
+          <h2>{days[day]}</h2>
+          {series
+            .filter((s) => s.data.schedule.day === day)
+            .sort((a, b) =>
+              a.data.schedule.time.localeCompare(b.data.schedule.time),
+            )
+            .map((s) => (
+              <a class="schedule-item" href={`/series/${s.id}/`}>
+                <time>{s.data.schedule.time}</time>
+                <span>
+                  <strong>{s.data.title}</strong>
+                  <small>{s.data.schedule.note}</small>
+                </span>
+              </a>
+            ))}
+          {!series.some((s) => s.data.schedule.day === day) && (
+            <p class="schedule-empty">Un día para recuperar tus favoritos.</p>
+          )}
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,167 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import SeriesCard from '../components/SeriesCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getSeries, getArticles } from '../data/catalog';
+const series = await getSeries();
+const samples = series.filter((s) => s.data.placeholder).length;
+const featured = series[0]!;
+const articles = await getArticles();
+const genres = ['Ciencia ficción', 'Fantasía', 'Drama', 'Aventura'];
+---
+
+<BaseLayout>
+  <div class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <Image
+        class="hero-art"
+        src={featured.data.hero}
+        width={1600}
+        height={900}
+        widths={[640, 1000, 1600]}
+        sizes="(max-width: 700px) 100vw, 1200px"
+        format="webp"
+        alt={`Ilustración editorial para ${featured.data.title}`}
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="hero-copy">
+        <p class="eyebrow">
+          <Icon name="spark" size={15} />
+          Una nueva historia te espera
+        </p>
+        <h1 id="hero-title">{featured.data.title}</h1>
+        <p class="hero-subtitle">
+          {featured.data.subtitle}
+          <br />
+          Piérdete en el mundo que viene después.
+        </p>
+        <div class="hero-tags">
+          {featured.data.genres.map((genre) => (
+            <span>{genre}</span>
+          ))}
+          <span>
+            {featured.data.placeholder
+              ? 'Ficción · placeholder'
+              : featured.data.status}
+          </span>
+        </div>
+        <div class="hero-buttons">
+          <a class="button button-primary" href={`/series/${featured.id}/`}>
+            <Icon name="play" size={18} />
+            Descubrir la historia
+          </a>
+          <button
+            class="favorite-button"
+            data-favorite={featured.id}
+            data-title={featured.data.title}
+            aria-label={`Guardar ${featured.data.title} en favoritos`}
+            aria-pressed="false"
+          >
+            <Icon name="heart" />
+          </button>
+        </div>
+      </div>
+      <div class="hero-bottom">
+        <span>SELECCIÓN DE LA SEMANA</span>
+        <span class="line" />
+        <span class="hero-number">
+          01{' '}
+          <span class="small">/ {String(series.length).padStart(2, '0')}</span>
+        </span>
+      </div>
+    </section>
+    <div class="intro-line">
+      <span>
+        <i class="status-dot" aria-hidden="true" />
+        Tu próxima historia, sin cuentas y a tu ritmo.
+      </span>
+      <span>Fuentes oficiales. Siempre.</span>
+    </div>
+    <section class="section" id="history-section" hidden>
+      <SectionHeading title="Sigue explorando" eyebrow="Tu última visita" />
+      <div class="history-list" id="history-list" />
+      <button class="text-button" id="clear-history">
+        Borrar historial
+      </button>
+    </section>
+    <section class="section">
+      <SectionHeading
+        title="Un mundo por descubrir"
+        eyebrow="Elige tu próxima historia"
+        href="/catalogo/"
+        link="Explorar catálogo"
+      />
+      <div
+        class="card-rail"
+        tabindex="0"
+        role="region"
+        aria-label="Historias destacadas, desplazamiento horizontal"
+      >
+        {series.map((item) => (
+          <SeriesCard series={item} />
+        ))}
+      </div>
+    </section>
+    <AdSlot position="home" />
+    <section class="section">
+      <SectionHeading
+        title="¿Qué te apetece hoy?"
+        eyebrow="Encuentra tu universo"
+      />
+      <div class="genre-grid">
+        {genres.map((genre, i) => (
+          <a
+            class="genre-tile"
+            href={`/catalogo/?genero=${encodeURIComponent(genre)}`}
+          >
+            <span>
+              0{i + 1} <span aria-hidden="true">↗</span>
+            </span>
+            <strong>{genre}</strong>
+            <span>
+              {series.filter((item) => item.data.genres.includes(genre)).length}{' '}
+              historias
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+    <section class="section">
+      <SectionHeading
+        title="Más allá del episodio"
+        eyebrow="Para mentes curiosas"
+        href="/articulos/"
+        link="Todas las historias"
+      />
+      <div class="home-articles">
+        {articles.slice(0, 3).map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </div>
+    </section>
+    <section class="editorial-callout">
+      <div>
+        <p class="eyebrow">Disfruta con tranquilidad</p>
+        <h2>El anime tiene un lugar oficial.</h2>
+        <p>
+          Descubre cómo reconocer canales autorizados y dónde encontrar cada
+          historia.{' '}
+          {samples > 0 &&
+            `El catálogo contiene ${samples} ficciones de demostración, sin vídeos.`}
+        </p>
+      </div>
+      <a
+        class="button button-secondary"
+        href="/articulos/ver-anime-legalmente/"
+      >
+        Nuestra guía
+        <Icon name="arrow" size={18} />
+      </a>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,56 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  youtubeId: string | null;
+  title: string;
+  placeholder: boolean;
+  legalUrl: string;
+}
+const { youtubeId, title, placeholder, legalUrl } = Astro.props;
+---
+
+<div
+  class="player"
+  data-player
+  data-youtube-id={!placeholder && youtubeId ? youtubeId : undefined}
+  data-video-title={title}
+>
+  <div class="player-intro">
+    <span class="player-orbit">
+      <Icon name="play" size={32} />
+    </span>
+    <h2>
+      {placeholder
+        ? 'Una historia por imaginar'
+        : youtubeId
+          ? 'Todo listo para empezar'
+          : 'Disponible en la fuente oficial'}
+    </h2>
+    <p>
+      {placeholder
+        ? 'Este episodio es ficticio y no tiene vídeo. El catálogo de muestra permite explorar el sitio sin atribuir licencias inexistentes.'
+        : youtubeId
+          ? 'Al reproducir conectas con YouTube (modo de privacidad mejorada). YouTube puede tratar datos según su política.'
+          : 'Este episodio tiene un enlace legal, sin vídeo incrustado.'}
+    </p>
+    {youtubeId && !placeholder ? (
+      <button class="button button-primary" data-play>
+        <Icon name="play" />
+        Reproducir desde YouTube
+      </button>
+    ) : (
+      <span class="pill">
+        {placeholder ? 'Placeholder · sin vídeo' : 'Sin incrustación'}
+      </span>
+    )}
+  </div>
+</div>
+<p class="player-note">
+  <Icon name="external" size={16} />
+  <a href={legalUrl} target="_blank" rel="noopener noreferrer">
+    {placeholder
+      ? 'Explorar una plataforma legal (no corresponde a esta ficción)'
+      : 'Ver en la plataforma oficial'}
+  </a>
+  <span>La disponibilidad depende de tu región.</span>
+</p>

@@ -1,0 +1,54 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+const links = [
+  ['/', 'Inicio'],
+  ['/catalogo/', 'Explorar'],
+  ['/calendario/', 'Calendario'],
+  ['/articulos/', 'Historias'],
+];
+const pathname = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/" aria-label={`${site.name}, inicio`}>
+      <span class="brand-mark" aria-hidden="true">
+        y
+      </span>
+      {site.name.toLowerCase()}
+      <span class="brand-dot">.</span>
+    </a>
+    <nav id="main-nav" class="main-nav" aria-label="Principal">
+      {links.map(([href, label]) => (
+        <a href={href} aria-current={pathname === href ? 'page' : undefined}>
+          {label}
+        </a>
+      ))}
+    </nav>
+    <div class="header-actions">
+      <a class="icon-button" href="/catalogo/#buscar" aria-label="Buscar anime">
+        <Icon name="search" />
+      </a>
+      <a class="icon-button" href="/favoritos/" aria-label="Mis favoritos">
+        <Icon name="heart" />
+      </a>
+      <button
+        class="icon-button"
+        id="theme-toggle"
+        aria-label="Cambiar a tema claro"
+      >
+        <Icon name="sun" />
+      </button>
+      <button
+        class="icon-button menu-toggle"
+        id="menu-toggle"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <Icon name="menu" />
+      </button>
+    </div>
+  </div>
+</header>

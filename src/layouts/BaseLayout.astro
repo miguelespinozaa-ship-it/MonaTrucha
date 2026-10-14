@@ -1,0 +1,127 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Consent from '../components/Consent.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { site, clientConfig } from '../data/site';
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/dm-sans';
+import displayFont from '@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2?url';
+import bodyFont from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
+import '../styles/global.css';
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  schema?: Record<string, unknown>;
+  noindex?: boolean;
+  omitNavAds?: boolean;
+}
+const {
+  title,
+  description = site.description,
+  image = '/og.png',
+  type = 'website',
+  schema,
+  noindex = false,
+  omitNavAds = false,
+} = Astro.props;
+const pageTitle = title
+  ? `${title} — ${site.name}`
+  : `${site.name} — Tu próxima historia`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const graph = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.name,
+    url: site.url,
+    inLanguage: 'es',
+  },
+  ...(schema ? [{ '@context': 'https://schema.org', ...schema }] : []),
+];
+---
+
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#111019" />
+    <meta name="color-scheme" content="dark light" />
+    {(noindex || site.url.includes('example.com')) && (
+      <meta name="robots" content="noindex,follow" />
+    )}
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content={new URL(image, site.url).href} />
+    <meta
+      property="og:image:alt"
+      content="Ilustración original del catálogo de demostración"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    {site.verification && (
+      <meta name="google-site-verification" content={site.verification} />
+    )}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href={displayFont}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href={bodyFont}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+    <script is:inline>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem('yoru-theme') === 'light' ? 'light' : 'dark';
+      } catch {
+        /* Tema oscuro si el almacenamiento no está disponible. */
+      }
+    </script>
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(graph).replace(/</g, '\\u003c')}
+    />
+    <script
+      id="site-config"
+      type="application/json"
+      set:html={JSON.stringify(clientConfig).replace(/</g, '\\u003c')}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">
+      Saltar al contenido
+    </a>
+    <Header />
+    {!omitNavAds && (
+      <div class="container nav-ad">
+        <AdSlot position="nav" />
+      </div>
+    )}
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+    <Consent />
+    <div class="sr-only" id="live-status" role="status" aria-live="polite" />
+    <script>
+      import '../scripts/client';
+    </script>
+  </body>
+</html>

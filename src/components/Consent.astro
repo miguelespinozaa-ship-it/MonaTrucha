@@ -1,0 +1,76 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section
+  id="cookie-banner"
+  class="cookie-banner"
+  aria-label="Preferencias de privacidad"
+  hidden
+>
+  <div>
+    <p class="eyebrow">Tú decides</p>
+    <h2>Tu espacio, tus preferencias.</h2>
+    <p>
+      Los favoritos y el tema se guardan en tu navegador. Los anuncios y la
+      analítica solo se cargan si los aceptas.{' '}
+      <a href="/privacidad/">Más información</a>
+    </p>
+  </div>
+  <div class="cookie-actions">
+    <button class="button button-primary" data-consent="accept">
+      Aceptar
+    </button>
+    <button class="button button-secondary" data-consent="reject">
+      Rechazar
+    </button>
+    <button class="text-button" data-cookie-settings>
+      Configurar
+    </button>
+  </div>
+</section>
+<dialog
+  id="cookie-dialog"
+  class="preferences-dialog"
+  aria-labelledby="cookie-title"
+>
+  <div class="dialog-heading">
+    <h2 id="cookie-title">Tu privacidad</h2>
+    <button
+      class="icon-button"
+      data-close-dialog
+      aria-label="Cerrar preferencias"
+    >
+      <Icon name="close" />
+    </button>
+  </div>
+  <p>Puedes cambiar estas opciones cuando quieras desde el pie de página.</p>
+  <div class="preference">
+    <div>
+      <strong>Almacenamiento funcional</strong>
+      <p>Recuerda tema, favoritos y episodios visitados.</p>
+    </div>
+    <span>Siempre activo</span>
+  </div>
+  <label class="preference">
+    <span>
+      <strong>Anuncios</strong>
+      <small>Permite conectar con Google AdSense.</small>
+    </span>
+    <input id="consent-ads" type="checkbox" />
+  </label>
+  <label class="preference">
+    <span>
+      <strong>Analítica</strong>
+      <small>Permite estadísticas con Cloudflare Web Analytics.</small>
+    </span>
+    <input id="consent-analytics" type="checkbox" />
+  </label>
+  <button class="button button-primary" id="save-consent">
+    Guardar preferencias
+  </button>
+  <p class="small">
+    Al retirar el consentimiento se recarga la página para detener los recursos
+    ya cargados.
+  </p>
+</dialog>

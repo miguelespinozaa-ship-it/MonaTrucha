@@ -1,0 +1,41 @@
+---
+import { site } from '../data/site';
+import { getSeries } from '../data/catalog';
+const samples = (await getSeries()).filter((s) => s.data.placeholder).length;
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a class="brand" href="/">
+        {site.name.toLowerCase()}
+        <span class="brand-dot">.</span>
+      </a>
+      <p>
+        Historias que se quedan contigo.
+        <br />
+        Descubre anime a tu ritmo.
+      </p>
+      <span class="eyebrow">Fuentes oficiales · Sin cuentas</span>
+    </div>
+    <nav aria-label="Información">
+      <a href="/acerca-de/">Acerca de</a>
+      <a href="/contacto/">Contacto</a>
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/derechos/">Derechos de autor</a>
+      <button class="text-button" data-cookie-settings>
+        Preferencias de cookies
+      </button>
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <span>
+      © {new Date().getUTCFullYear()} {site.name} · Hecho para descubrir.
+    </span>
+    <span>
+      {samples
+        ? `Catálogo de demostración · ${samples} historias ficticias`
+        : 'Descubre historias en sus fuentes oficiales'}
+    </span>
+  </div>
+</footer>

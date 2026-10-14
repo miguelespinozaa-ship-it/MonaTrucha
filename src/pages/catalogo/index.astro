@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeriesCard from '../../components/SeriesCard.astro';
+import { getSeries } from '../../data/catalog';
+const series = await getSeries();
+const samples = series.filter((s) => s.data.placeholder).length;
+const genres = [...new Set(series.flatMap((s) => s.data.genres))].sort();
+---
+
+<BaseLayout
+  title="Explorar anime"
+  description="Encuentra tu próxima historia por título o género. Explora el catálogo a tu ritmo."
+>
+  <div class="container">
+    <div class="page-heading">
+      <p class="eyebrow">Tu universo, a tu ritmo</p>
+      <h1>Explora lo que te mueve.</h1>
+      <p>Cada historia es una puerta. Encuentra la tuya.</p>
+    </div>
+    {samples > 0 && (
+      <p class="notice">
+        Catálogo de demostración: {samples} series ficticias marcadas como
+        placeholder, sin vídeos ni licencias asociadas.
+      </p>
+    )}
+    <form class="filters" id="catalog-search" role="search">
+      <label>
+        Buscar una historia
+        <input
+          id="buscar"
+          type="search"
+          placeholder="Título, género, una nueva aventura…"
+          autocomplete="off"
+        />
+      </label>
+      <label>
+        Género
+        <select id="genre-filter">
+          <option value="">Todos los géneros</option>
+          {genres.map((genre) => (
+            <option value={genre}>{genre}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Formato
+        <select id="format-filter">
+          <option value="">Todos los formatos</option>
+          <option>Serie</option>
+          <option>Película</option>
+        </select>
+      </label>
+    </form>
+    <div class="results-summary">
+      <span id="results-count" role="status" aria-live="polite">
+        {series.length} historias para descubrir
+      </span>
+      <button class="text-button" id="reset-filters">
+        Limpiar filtros
+      </button>
+    </div>
+    <div class="catalog-grid">
+      {series.map((item) => (
+        <div
+          data-search-card
+          data-search={`${item.data.title} ${item.data.subtitle} ${item.data.genres.join(' ')}`}
+          data-genres={item.data.genres.join('|')}
+          data-format={item.data.format}
+        >
+          <SeriesCard series={item} headingLevel="h2" />
+        </div>
+      ))}
+    </div>
+    <div class="empty-state" id="search-empty" hidden>
+      <h2>Aún no encontramos esa historia.</h2>
+      <p>Prueba otro título o cambia los filtros.</p>
+    </div>
+    <noscript>
+      <p class="notice">
+        Los filtros necesitan JavaScript. Puedes explorar todas las fichas a
+        continuación.
+      </p>
+    </noscript>
+  </div>
+</BaseLayout>
+<script>
+  const selected = new URLSearchParams(window.location.search).get('genero');
+  const select = document.querySelector<HTMLSelectElement>('#genre-filter');
+  if (
+    select &&
+    selected &&
+    Array.from(select.options).some((o) => o.value === selected)
+  ) {
+    select.value = selected;
+    select.dispatchEvent(new Event('change'));
+  }
+</script>
