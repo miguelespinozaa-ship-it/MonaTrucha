@@ -80,27 +80,27 @@ const schema = {
             </a>
           ))}
         </div>
-        <div class="detail-actions">
-          {series.data.episodes[0] && (
-            <a
-              class="button button-primary"
-              href={`/episodios/${series.id}/${series.data.episodes[0].number}/`}
-            >
-              <Icon name="play" size={18} />
-              {series.data.placeholder ? 'Explorar episodios' : 'Comenzar'}
-            </a>
-          )}
-          <button
-            class="favorite-button"
-            data-favorite={series.id}
-            data-title={series.data.title}
-            aria-label={`Guardar ${series.data.title} en favoritos`}
-            aria-pressed="false"
+      </div>
+      <div class="detail-actions">
+        {series.data.episodes[0] && (
+          <a
+            class="button button-primary"
+            href={`/episodios/${series.id}/${series.data.episodes[0].number}/`}
           >
-            <Icon name="heart" size={18} />
-            Mi lista
-          </button>
-        </div>
+            <Icon name="play" size={18} />
+            {series.data.placeholder ? 'Explorar episodios' : 'Comenzar'}
+          </a>
+        )}
+        <button
+          class="favorite-button"
+          data-favorite={series.id}
+          data-title={series.data.title}
+          aria-label={`Guardar ${series.data.title} en favoritos`}
+          aria-pressed="false"
+        >
+          <Icon name="heart" size={18} />
+          Mi lista
+        </button>
       </div>
     </section>
     {series.data.placeholder && (

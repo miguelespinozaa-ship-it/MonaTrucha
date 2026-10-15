@@ -27,15 +27,28 @@ test('inicio, tema y consentimiento sin recursos externos', async ({
 test('búsqueda, género y estado vacío', async ({ page }) => {
   await page.goto('/catalogo/');
   await page.getByRole('button', { name: 'Rechazar', exact: true }).click();
-  await page.getByRole('searchbox').fill('neon');
+  await page.getByRole('searchbox').fill('Ecos de neon');
   await expect(page.locator('[data-search-card]:visible')).toHaveCount(1);
   await page.getByRole('button', { name: 'Limpiar filtros' }).click();
   await page.locator('#genre-filter').selectOption('Fantasía');
-  await expect(page.locator('[data-search-card]:visible')).toHaveCount(1);
+  await expect(
+    page.getByRole('heading', { name: 'El jardín de las nubes' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Ecos de neón' }),
+  ).toBeHidden();
   await page.getByRole('searchbox').fill('inexistente');
   await expect(page.locator('#search-empty')).toBeVisible();
   await page.goto('/catalogo/?genero=Drama');
-  await expect(page.locator('[data-search-card]:visible')).toHaveCount(2);
+  await expect(
+    page.getByRole('heading', { name: 'La chica del mar' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Último tren a Kioto' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Ecos de neón' }),
+  ).toBeHidden();
 });
 test('favoritos persistentes y eliminación', async ({ page }) => {
   await page.goto('/catalogo/');
@@ -95,7 +108,9 @@ test('el reproductor conecta con YouTube solo al pulsar, usando fixture aislada'
   await page.getByRole('button', { name: 'Rechazar', exact: true }).click();
   expect(videos).toEqual([]);
   await expect(page.locator('iframe')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Reproducir desde YouTube' }).click();
+  await page.getByRole('button', { name: 'Reproducir desde YouTube' }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('iframe')).toBeFocused();
   await expect(page.locator('iframe')).toHaveAttribute(
     'src',
     'https://www.youtube-nocookie.com/embed/abcdefghijk?autoplay=1&rel=0',
@@ -179,6 +194,11 @@ for (const theme of ['dark', 'light'])
       '/articulos/por-donde-empezar/',
       '/calendario/',
       '/contacto/',
+      '/articulos/',
+      '/favoritos/',
+      '/privacidad/',
+      '/derechos/',
+      '/acerca-de/',
     ]) {
       await page.goto(path);
       await page.evaluate((value) => {

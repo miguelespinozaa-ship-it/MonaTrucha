@@ -260,6 +260,23 @@ document
 document
   .querySelector('[data-close-dialog]')
   ?.addEventListener('click', () => dialog?.close());
+dialog?.addEventListener('keydown', (event) => {
+  if (event.key !== 'Tab' || !dialog.open) return;
+  const controls = Array.from(
+    dialog.querySelectorAll<HTMLElement>(
+      'button:not([disabled]), input:not([disabled]), a[href]',
+    ),
+  ).filter((el) => el.offsetParent !== null);
+  const first = controls[0];
+  const last = controls.at(-1);
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last?.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first?.focus();
+  }
+});
 document
   .getElementById('save-consent')
   ?.addEventListener('click', () =>

@@ -2,17 +2,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import matter from 'gray-matter';
+import { countWords } from '../scripts/content-report.mjs';
 import { readSeries, validateEpisode } from '../scripts/content.mjs';
-test('ninguna ficción publica un vídeo y todas tienen texto editorial', async () => {
+test('contenido publicable: muestras sin vídeos y textos editoriales completos', async () => {
   const series = await readSeries();
-  assert.equal(series.length, 5);
   for (const s of series) {
-    assert.equal(s.placeholder, true);
-    for (const e of s.episodes) assert.equal(validateEpisode(s, e), false);
+    for (const e of s.episodes) {
+      const verified = validateEpisode(s, e);
+      if (s.placeholder) assert.equal(verified, false);
+    }
     const text = matter(
       await readFile(`src/content/series/${s.id}.md`, 'utf8'),
     ).content;
-    const words = text.trim().split(/\s+/).length;
+    const words = countWords(text);
     assert.ok(words >= 150 && words <= 300, `${s.id}: ${words} palabras`);
   }
 });

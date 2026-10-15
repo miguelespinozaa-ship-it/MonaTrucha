@@ -25,6 +25,7 @@ export default [
         fetch: 'readonly',
         AbortSignal: 'readonly',
         Buffer: 'readonly',
+        Response: 'readonly',
         setTimeout: 'readonly',
       },
     },

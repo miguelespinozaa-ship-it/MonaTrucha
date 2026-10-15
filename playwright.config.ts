@@ -8,7 +8,9 @@ const executablePath =
     : undefined);
 export default defineConfig({
   testDir: './tests',
-  testMatch: process.env['ADS_TEST_MODE'] ? 'ads.spec.ts' : 'site.spec.ts',
+  testMatch: process.env['ADS_TEST_MODE']
+    ? 'ads.spec.ts'
+    : ['site.spec.ts', 'quality.spec.ts'],
   fullyParallel: true,
   workers: 2,
   retries: process.env['CI'] ? 1 : 0,
@@ -21,10 +23,20 @@ export default defineConfig({
     },
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
+    {
+      name: 'desktop',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 900 },
+      },
+    },
     {
       name: 'mobile',
-      use: { ...devices['Pixel 7'], defaultBrowserType: 'chromium' },
+      use: {
+        ...devices['Pixel 7'],
+        viewport: { width: 360, height: 800 },
+        defaultBrowserType: 'chromium',
+      },
     },
   ],
   webServer: {

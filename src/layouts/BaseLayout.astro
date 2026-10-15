@@ -3,7 +3,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Consent from '../components/Consent.astro';
 import AdSlot from '../components/AdSlot.astro';
-import { site, clientConfig } from '../data/site';
+import { site, clientConfig, indexingEnabled } from '../data/site';
 import '@fontsource-variable/outfit';
 import '@fontsource-variable/dm-sans';
 import displayFont from '@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2?url';
@@ -53,7 +53,7 @@ const graph = [
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#111019" />
     <meta name="color-scheme" content="dark light" />
-    {(noindex || site.url.includes('example.com')) && (
+    {(!indexingEnabled || noindex || site.url.includes('example.com')) && (
       <meta name="robots" content="noindex,follow" />
     )}
     <meta property="og:type" content={type} />

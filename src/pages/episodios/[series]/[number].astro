@@ -50,29 +50,28 @@ const next = series.data.episodes[index + 1];
       legalUrl={episode.legalUrl}
     />
     <nav class="episode-nav" aria-label="Episodios">
-      {previous ? (
+      <a
+        class="button button-secondary episode-all"
+        href={`/series/${series.id}/`}
+      >
+        Todos los episodios
+      </a>
+      {previous && (
         <a
           class="button button-secondary"
           href={`/episodios/${series.id}/${previous.number}/`}
         >
           ← Anterior
         </a>
-      ) : (
-        <span />
       )}
-      <a class="button button-secondary" href={`/series/${series.id}/`}>
-        Todos los episodios
-      </a>
-      {next ? (
+      {next && (
         <a
-          class="button button-primary"
+          class="button button-primary episode-next"
           href={`/episodios/${series.id}/${next.number}/`}
         >
           Siguiente
           <Icon name="arrow" size={18} />
         </a>
-      ) : (
-        <span />
       )}
     </nav>
     <p class="notice">

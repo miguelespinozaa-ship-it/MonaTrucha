@@ -19,7 +19,7 @@ const covers = import.meta.glob<{ default: ImageMetadata }>(
 );
 
 export async function getSeries() {
-  const entries = await getCollection('series');
+  const entries = await getCollection('series', ({ data }) => !data.draft);
   for (const entry of entries) {
     if (entry.data.placeholder || !entry.data.apiId) continue;
     const load = covers[`../assets/remote/${entry.data.apiId}.jpg`];
@@ -32,7 +32,7 @@ export async function getSeries() {
   );
 }
 export async function getArticles() {
-  return (await getCollection('articles')).sort(
+  return (await getCollection('articles', ({ data }) => !data.draft)).sort(
     (a, b) => b.data.date.getTime() - a.data.date.getTime(),
   );
 }

@@ -1,15 +1,16 @@
 import { readFile, readdir } from 'node:fs/promises';
 import matter from 'gray-matter';
-export async function readSeries() {
+export async function readSeries({ includeDrafts = false } = {}) {
   const files = (await readdir('src/content/series')).filter((f) =>
     f.endsWith('.md'),
   );
-  return Promise.all(
+  const entries = await Promise.all(
     files.map(async (file) => ({
       id: file.slice(0, -3),
       ...matter(await readFile(`src/content/series/${file}`, 'utf8')).data,
     })),
   );
+  return includeDrafts ? entries : entries.filter((entry) => !entry.draft);
 }
 export const officialChannels = new Set([
   '@MuseAsia',

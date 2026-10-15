@@ -1,0 +1,227 @@
+[
+  {
+    "id": "f0-p1-01",
+    "title": "Crear la organización y el repositorio en GitHub e invitar a las otras dos personas.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p1-02",
+    "title": "Crear el proyecto Astro vacío y subirlo.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p1-03",
+    "title": "Conectar el repositorio a Cloudflare Pages para que cada cambio en la rama principal se publique solo.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p1-04",
+    "title": "Proteger la rama principal: nadie fusiona sin revisión.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p2-01",
+    "title": "Mirar tres sitios de anime legales y anotar qué funciona en móvil.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p2-02",
+    "title": "Maquetar en Figma cuatro pantallas: inicio, catálogo, ficha de serie y página de episodio.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p2-03",
+    "title": "Fijar colores, tipografía y nombre provisional con el equipo.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p3-01",
+    "title": "Listar los canales oficiales que publican episodios completos gratis y comprobar en qué países se ven.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p3-02",
+    "title": "Elegir las 20 primeras series con todos sus episodios disponibles y guardar los enlaces en una hoja compartida.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p3-03",
+    "title": "Elegir el público inicial (país e idioma), porque muchos vídeos oficiales tienen bloqueo regional.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f0-p3-04",
+    "title": "Crear el tablero en GitHub Projects con las tareas de este plan.",
+    "condition": "una página \"Hola\" publicada en una URL de Cloudflare Pages y 20 series legales elegidas."
+  },
+  {
+    "id": "f1-p1-01",
+    "title": "Definir el formato de datos: un archivo por serie con el identificador de la API y la lista de episodios con su enlace oficial.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p1-02",
+    "title": "Escribir el script que, al compilar, pide a la API título, sinopsis, portada y géneros de cada serie.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p1-03",
+    "title": "Guardar las respuestas en caché para no superar el límite de peticiones de la API.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p1-04",
+    "title": "Generar el sitemap y el archivo robots.txt.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p2-01",
+    "title": "Construir la plantilla común: cabecera, pie y menú móvil.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p2-02",
+    "title": "Construir inicio y catálogo con filtro por género.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p2-03",
+    "title": "Construir la ficha de serie con su lista de episodios.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p2-04",
+    "title": "Construir la página de episodio con el reproductor incrustado, cargado solo al pulsar para no frenar la página.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p2-05",
+    "title": "Dejar reservados los huecos de anuncios con tamaño fijo, vacíos por ahora.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p3-01",
+    "title": "Rellenar los archivos de las 20 series con los enlaces de la fase 0.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p3-02",
+    "title": "Escribir para cada serie un texto propio de 150 a 300 palabras (de qué va, para quién es, por dónde empezar).",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f1-p3-03",
+    "title": "Redactar las páginas Acerca de, Contacto, Política de privacidad y Aviso de derechos de autor con un correo para reclamaciones.",
+    "condition": "cualquiera entra sin registrarse, encuentra una de las 20 series y ve un episodio en el móvil."
+  },
+  {
+    "id": "f2-p1-01",
+    "title": "Dar de alta el sitio en Google Search Console y enviar el sitemap.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p1-02",
+    "title": "Activar Cloudflare Web Analytics.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p1-03",
+    "title": "Llevar la puntuación de rendimiento móvil por encima de 90 en PageSpeed Insights.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p1-04",
+    "title": "Programar una recompilación diaria para refrescar datos y detectar vídeos retirados.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p2-01",
+    "title": "Añadir buscador en el propio navegador sobre un índice generado al compilar.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p2-02",
+    "title": "Añadir favoritos y \"seguir viendo\" con localStorage.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p2-03",
+    "title": "Añadir la sección de artículos y el calendario de estrenos.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p2-04",
+    "title": "Añadir datos estructurados y etiquetas para compartir en redes en cada ficha.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p3-01",
+    "title": "Subir el catálogo a 50 series.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p3-02",
+    "title": "Publicar tres artículos por semana: guías de orden de visionado, listas por género y reseñas.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p3-03",
+    "title": "Abrir una o dos cuentas sociales (TikTok o Instagram, y un servidor de Discord) y publicar a diario.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f2-p3-04",
+    "title": "Revisar cada semana en Search Console qué búsquedas traen visitas y escribir sobre ellas.",
+    "condition": "sitio indexado en Google, 50 series, 30 artículos propios y visitas orgánicas diarias."
+  },
+  {
+    "id": "f3-p1-01",
+    "title": "Comprar el dominio y apuntarlo a Cloudflare Pages.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p1-02",
+    "title": "Redirigir la URL antigua al dominio nuevo y actualizar Search Console.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p1-03",
+    "title": "Publicar el archivo ads.txt que entregue la red de anuncios.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p2-01",
+    "title": "Integrar el código de anuncios en los huecos reservados, nunca encima ni pegado al reproductor.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p2-02",
+    "title": "Integrar el aviso de consentimiento de cookies que exige la red.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p2-03",
+    "title": "Comprobar que la página no salta al cargar los anuncios y que la velocidad se mantiene.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p3-01",
+    "title": "Solicitar el alta en la red de anuncios (ver Monetización) y corregir lo que pidan si rechazan.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p3-02",
+    "title": "Actualizar la política de privacidad con los datos de la red.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p3-03",
+    "title": "Abrir la cuenta de cobro y acordar por escrito el reparto de ingresos entre los tres.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  },
+  {
+    "id": "f3-p3-04",
+    "title": "Llevar una hoja mensual de visitas, ingresos e ingreso por mil visitas.",
+    "condition": "anuncios aprobados y primeros ingresos registrados."
+  }
+]

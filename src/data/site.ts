@@ -1,4 +1,5 @@
 const env = import.meta.env;
+export const indexingEnabled = env.PUBLIC_INDEXING_ENABLED === 'true';
 export const site = {
   name: env.PUBLIC_SITE_NAME || 'Yoru',
   url: env.PUBLIC_SITE_URL || 'https://example.com',

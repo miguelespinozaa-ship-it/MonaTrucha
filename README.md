@@ -30,6 +30,8 @@ npm test
 npm run test:ads
 npm run perf
 npm run verify:videos
+npm run check:links
+npm run maintenance:report
 ```
 
 Las pruebas de navegador requieren Chromium. Se usa `/usr/bin/chromium` si está disponible; fuera de este entorno ejecuta `npx playwright install chromium` o configura `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`. `npm test` necesita un `dist/` recién compilado. El servidor de pruebas aplica las cabeceras CSP de Cloudflare; `astro preview` no las aplica. Las pruebas publicitarias compilan una variante aislada en `.cache/ads-build`, con identificadores ficticios y proveedores simulados; no sirven anuncios reales.
@@ -57,6 +59,21 @@ public/                    ads.txt, _headers, favicon y Open Graph
 ```
 
 No hay backend, base de datos, cuentas, comentarios ni sincronización. Las búsquedas usan los datos del HTML generado; `search-index.json` ofrece también el índice completo para futuras integraciones. Favoritos, tema y hasta veinte últimos episodios visitados viven en localStorage. El historial registra visitas, no minutos vistos. Si el navegador bloquea el almacenamiento, las funciones básicas siguen disponibles sin persistencia.
+
+## Herramientas editoriales
+
+```sh
+npm run content:report
+npm run content:report -- --json
+npm run new:series -- <slug>
+npm run new:article -- <slug>
+```
+
+El informe guarda `.cache/content-report.json`: distingue series reales, muestras, artículos definitivos, borradores y episodios con `verified: true`, cuenta palabras sin comentarios ni URLs Markdown y muestra las metas 20/50/30. Una meta pendiente no falla el comando. Sí fallan campos inválidos, imágenes inexistentes, episodios duplicados o textos publicados fuera de 150–300 palabras. Los borradores incompletos emiten avisos y no cuentan para metas; ningún campo sustituye la verificación humana de derechos.
+
+Los generadores crean borradores `draft: true`, `placeholder: true`, sin vídeos, y rechazan slugs peligrosos o archivos existentes. Los borradores quedan excluidos del catálogo, rutas, metadatos y verificación de vídeos. Completa la plantilla de `templates/`, revisa con otra persona y solo entonces cambia `draft`. No cambies `placeholder` hasta tener una obra real comprobada.
+
+La persona 3 dispone de [una hoja CSV vacía de ejemplo](docs/lista-series-ejemplo.csv) y del issue **Verificación manual de un episodio**. Documenta titular, vínculo del canal con el titular, audio/subtítulos, regiones realmente revisadas, fecha, permiso de incrustación y alternativa legal. La fila PENDIENTE no representa una obra ni una licencia.
 
 ## Añadir una serie
 
@@ -148,6 +165,22 @@ La CMP se solicita solo después de aceptar anuncios; AdSense espera su señal. 
 
 Las posiciones son bajo el menú (excepto páginas de episodio), entre secciones del inicio, lateral sticky de escritorio, cada tres párrafos y debajo del bloque de reproducción y navegación. Nunca hay un anuncio delante del reproductor, superpuesto ni adyacente: existe una separación de al menos 48 px además del contenido intermedio. Se cargan al acercarse al viewport y se limita a tres slots visibles por pantalla. El espacio se conserva aunque el proveedor esté bloqueado para evitar saltos.
 
+## Preparar el lanzamiento
+
+Sigue [la lista de lanzamiento por roles](docs/lanzamiento.md): incluye comandos, evidencia y capturas esperadas para Pages, dominio/TLS, redirecciones, Search Console, variables, ads.txt y CMP. La indexación tiene una opción independiente, `PUBLIC_INDEXING_ENABLED=false` por defecto, para mantener noindex y robots bloqueado incluso al cambiar de dominio. Mantiene anuncios apagados y noindex; preparar una cuenta no acredita su aprobación ni la indexación.
+
+```sh
+npm run preflight
+npm run preflight -- --strict
+npm run preflight -- --cmp-required --json
+npm run project:plan
+npm run project:import -- --owner PROPIETARIO --project NUMERO --apply
+```
+
+`preflight` lee las variables inyectadas y `.env`, no imprime sus valores ni los modifica. Por defecto avisa sin bloquear; `--strict` termina con 1 ante requisitos incompletos. Comprueba dominio, nombre, correo, cliente/slots y ads.txt coherentes, y CMP si se declara aplicable. Una configuración completa no demuestra licencias, aprobación de AdSense ni certificación de CMP.
+
+El tablero se prepara a partir de las 45 tareas del plan en `docs/project-tasks.json`. Sin `--apply`, el importador solo imprime la propuesta. Con `--apply` y permiso de Projects crea borradores en un tablero existente y evita duplicados por identificador. CODEOWNERS contiene los tres roles como reglas comentadas: rellenar usuarios/equipos reales y descomentarlas antes de exigir revisiones automáticas.
+
 ## Cloudflare Pages
 
 1. Sube los cambios al repositorio y crea un proyecto **Pages** conectado a GitHub.
@@ -158,15 +191,37 @@ Las posiciones son bajo el menú (excepto páginas de episodio), entre secciones
 
 `public/_headers` declara CSP, protección de iframes del sitio, tipos MIME y política de referencia. El build genera `dist/_headers` con hashes de los scripts inline ejecutables; **publica siempre el resultado completo de `npm run build`**. Permite YouTube, AdSense y analítica, sin `unsafe-inline` para scripts; los estilos inline se permiten para el proveedor publicitario. Los assets con hash se cachean durante un año. Las fuentes Outfit y DM Sans se autoalojan con sus licencias Fontsource; no se conecta con Google Fonts.
 
+## Calidad de enlaces, teclado y diseño
+
+`npm run check:links` recorre el HTML de `dist/`: comprueba rutas, recursos y anclas internos y los enlaces externos HTTPS. Solo un 404/410 confirmado mediante HEAD y GET se considera roto. Bloqueos 401/403, límites 429, errores 5xx, DNS, TLS y timeouts se registran como `unknown`; no hacen fallar CI ni se presentan como enlaces correctos. `--internal-only` permite una comprobación sin red. El informe queda en `.cache/link-report.json`. Se limita la concurrencia a cuatro destinos, no se envían credenciales y se bloquean destinos privados y redirecciones hacia ellos.
+
+`npm test` usa anchos exactos de **360 y 1280 px**. Axe revisa doce rutas en temas claro y oscuro; se comprueban el orden y retorno del foco en preferencias, la activación del reproductor con Enter, la ausencia de tabindex positivo y `prefers-reduced-motion`. Las cinco plantillas principales generan capturas en `.cache/visual/`. El pulido mantiene dimensiones de imágenes y reserva de anuncios: títulos equilibrados, texto de lectura de 68ch, CTA móviles fuera de la columna estrecha y foco visible en portadas.
+
 ## CI, recompilación y lanzamiento
 
-`ci.yml` ejecuta instalación con lockfile, ESLint, Prettier, chequeo TypeScript/Astro, pruebas de contenido, build y navegador por PR y en `main`. `daily.yml` actualiza metadatos, verifica vídeos, compila y conserva un informe **cada día a las 06:20 UTC**. Un error de vídeo hace fallar la acción; configura notificaciones de GitHub para revisar el informe.
+`ci.yml` ejecuta instalación con lockfile, ESLint, Prettier, chequeo TypeScript/Astro, pruebas de contenido, build y navegador por PR y en `main`. `daily.yml` actualiza metadatos, verifica vídeos, compila y conserva un informe **cada día a las 06:20 UTC**. Los fallos confirmados de vídeo hacen fallar la acción; bloqueos y fallos de red quedan como desconocidos. Configura notificaciones de GitHub para revisar el informe.
 
 Para que esa acción publique también, crea un Deploy Hook de Pages y guarda la URL como secreto de GitHub **`CLOUDFLARE_DEPLOY_HOOK`**. Sin ese secreto, la acción valida el build pero no publica. Las compilaciones de Pages al recibir un push siguen funcionando a través de la integración GitHub. No pongas el hook en una variable `PUBLIC_`.
 
 Configura protección de `main` con revisión de otra persona y el check `validate` requerido. Usa la plantilla de issue de contenido y crea el tablero de GitHub Projects con las fases del plan. Ninguna de esas configuraciones administrativas se ha cambiado desde el entorno.
 
 Para indexar, publica primero contenido definitivo y configura el dominio. Verifica la propiedad en Google Search Console con DNS o `PUBLIC_GOOGLE_SITE_VERIFICATION`, y envía `/sitemap-index.xml`. Activar Cloudflare Web Analytics requiere un token público de beacon. Vuelve a medir con PageSpeed Insights en el dominio real y después de activar cada proveedor.
+
+## Revisar y fusionar los bloques
+
+Los cuatro PR están encadenados: editorial → calidad → lanzamiento → mantenimiento. Revisarlos en ese orden. Después de fusionar un bloque en `main`, cambiar la base del siguiente PR a `main` antes de fusionarlo (GitHub puede hacerlo automáticamente al eliminar la rama anterior). Cada diff muestra así el bloque pendiente y los cambios terminan en la rama principal. No se han fusionado PR desde esta tarea.
+
+## Mantenimiento semanal
+
+Dependabot propone actualizaciones semanales de npm y GitHub Actions, los lunes a las 06:30 de Chicago; agrupa parches/menores sin fusionarlos automáticamente. Las actualizaciones mayores y los cambios de stack siguen sujetos a revisión.
+
+`weekly.yml` ejecuta build, verificación de vídeos y comprobación de enlaces cada lunes a las 12:40 UTC (07:40 en Chicago durante CDT, 06:40 durante CST), además de permitir ejecución manual. Conserva JSON/Markdown en el artefacto `maintenance-reports` y crea **un issue por semana**, incluso si no hay incidencias confirmadas. Repetir la ejecución actualiza solo el bloque generado del mismo issue, conserva las notas humanas y no reabre un issue cerrado. Las ejecuciones se serializan para evitar duplicados.
+
+El job que instala dependencias y hace peticiones de red solo tiene lectura. La publicación se hace en otro job, sin instalar dependencias, con permiso `issues: write`; no hay publicación desde PR ni `pull_request_target`. Los informes incompletos o anteriores al inicio de la ejecución se indican como tales y los fallos de comandos conservan su resultado de error, aunque se llegue a publicar el informe. Las rutas concretas de artefactos incluyen archivos ocultos para conservar `.cache/*-report.json` sin subir configuración o cachés completas.
+
+Para revisar informes locales, ejecuta `npm run verify:videos`, `npm run check:links` y `npm run maintenance:report`. El último comando **solo genera archivos locales** y no crea issues. Usa informes de hasta 24 horas; CI exige los de su propia ejecución. Los vídeos ficticios se omiten; una respuesta oEmbed accesible no acredita licencias, regiones ni permiso de incrustación. Un 404/410 es un aviso para revisar, no una prueba de retirada mundial. Los `unknown` no se cuentan como enlaces correctos.
+
+P1 revisa infraestructura y enlaces; P3 revisa vídeos, evidencia y alternativas; P2 comprueba las fichas corregidas. El workflow semanal y Dependabot quedarán activos al fusionar sus archivos en la rama predeterminada y requieren Actions e Issues habilitados. La creación/actualización de issues se prueba con una API simulada: todavía no se ha ejecutado la tarea semanal en producción.
 
 ## Lo que depende del equipo
 
