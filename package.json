@@ -1,5 +1,5 @@
 {
-  "name": "sitio-anime",
+  "name": "reemplazar-nombre-proyecto",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -27,7 +27,8 @@
     "preflight": "node scripts/preflight.mjs",
     "project:plan": "node scripts/project-board.mjs",
     "project:import": "node scripts/project-board.mjs",
-    "maintenance:report": "node scripts/maintenance-report.mjs"
+    "maintenance:report": "node scripts/maintenance-report.mjs",
+    "content:import": "node scripts/import-content.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -47,7 +48,7 @@
     "@types/sanitize-html": "^2.16.2",
     "eslint": "^10.12.0",
     "eslint-plugin-astro": "^3.2.1",
-    "htmlparser2": "^10.1.0",
+    "htmlparser2": "^12.0.0",
     "lighthouse": "^13.5.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.1",
