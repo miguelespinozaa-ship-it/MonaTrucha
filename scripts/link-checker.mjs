@@ -60,7 +60,7 @@ export async function externalResponse(
       redirect: 'manual',
       signal: AbortSignal.timeout(timeout),
       credentials: 'omit',
-      headers: { 'User-Agent': 'sitio-anime-link-checker/1.0' },
+      headers: { 'User-Agent': 'project-link-checker/1.0' },
     });
     if (![301, 302, 303, 307, 308].includes(response.status)) return response;
     const location = response.headers.get('location');

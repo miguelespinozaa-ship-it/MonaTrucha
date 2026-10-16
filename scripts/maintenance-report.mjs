@@ -64,7 +64,7 @@ export function makeMaintenanceReport({
     if (outcome !== 'success')
       problems.push(`Paso ${step}: ${outcome}; revisar el log de Actions.`);
   const week = isoWeek(date);
-  const marker = `<!-- sitio-anime-maintenance:${week} -->`;
+  const marker = `<!-- project-maintenance:${week} -->`;
   const lines = [
     marker,
     START,
@@ -136,7 +136,7 @@ export async function publishMaintenanceIssue(github, { owner, repo }, report) {
     report.schemaVersion !== 1 ||
     report.title !== `Mantenimiento semanal · ${report.week}` ||
     !/^\d{4}-W\d{2}$/.test(report.week) ||
-    report.marker !== `<!-- sitio-anime-maintenance:${report.week} -->` ||
+    report.marker !== `<!-- project-maintenance:${report.week} -->` ||
     !report.body.startsWith(report.marker + '\n' + START) ||
     !report.body.endsWith(END) ||
     report.body.length > 60000

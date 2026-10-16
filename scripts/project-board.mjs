@@ -20,7 +20,7 @@ export function projectItems(tasks) {
     return {
       id: task.id,
       title: `F${phase} · P${role} · ${task.title}`,
-      body: `<!-- sitio-anime-task:${task.id} -->\n\nFuente: plan-sitio-anime.md, fase ${phase}, persona ${role}.\n\n${task.title}\n\nCondición de salida de la fase: ${task.condition}\n\n- [ ] Revisar lo ya implementado en el repositorio y la evidencia externa.\n- [ ] Asignar responsable real y revisión de otra persona.\n- [ ] Adjuntar evidencia y actualizar estado.\n\nPlantilla: el importador no declara que esta tarea esté hecha.`,
+      body: `<!-- project-task:${task.id} -->\n\nFuente: plan-sitio-anime.md, fase ${phase}, persona ${role}.\n\n${task.title}\n\nCondición de salida de la fase: ${task.condition}\n\n- [ ] Revisar lo ya implementado en el repositorio y la evidencia externa.\n- [ ] Asignar responsable real y revisión de otra persona.\n- [ ] Adjuntar evidencia y actualizar estado.\n\nPlantilla: el importador no declara que esta tarea esté hecha.`,
     };
   });
 }
@@ -29,7 +29,7 @@ export function pendingProjectItems(items, existing) {
     .map((item) => item.content?.body || item.body || '')
     .join('\n');
   return items.filter(
-    (item) => !bodies.includes(`<!-- sitio-anime-task:${item.id} -->`),
+    (item) => !bodies.includes(`<!-- project-task:${item.id} -->`),
   );
 }
 function gh(args) {

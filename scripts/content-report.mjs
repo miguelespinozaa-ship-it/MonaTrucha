@@ -59,7 +59,10 @@ export async function analyzeContent(root = process.cwd()) {
               `Texto de ${entry.words} palabras; se requieren 150–300.`,
             );
           for (const episode of parsed.episodes)
-            if (validateEpisode({ ...parsed, id: file }, episode))
+            if (
+              !entry.draft &&
+              validateEpisode({ ...parsed, id: file }, episode)
+            )
               entry.verifiedVideos++;
         } else if (!entry.words)
           (entry.draft ? entry.warnings : entry.errors).push(
