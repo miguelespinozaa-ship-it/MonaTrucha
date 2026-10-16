@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SeriesCard from '../components/SeriesCard.astro';
+import Icon from '../components/Icon.astro';
 import { getSeries } from '../data/catalog';
 const series = await getSeries();
 ---
@@ -14,23 +15,41 @@ const series = await getSeries();
         Tus favoritos viven en este navegador. Sin cuentas, sin sincronización.
       </p>
     </div>
-    <div class="catalog-grid" id="favorites-list">
-      {series.map((s) => (
-        <SeriesCard series={s} headingLevel="h2" />
-      ))}
+    <div class="favorites-stage">
+      <div class="catalog-grid" id="favorites-list" hidden>
+        {series.map((s) => (
+          <SeriesCard series={s} headingLevel="h2" />
+        ))}
+      </div>
+      <section
+        class="empty-state favorites-empty"
+        id="favorites-empty"
+        aria-labelledby="empty-title"
+        hidden
+      >
+        <div class="empty-collection" aria-hidden="true">
+          <span class="empty-card" />
+          <span class="empty-card" />
+          <span class="empty-card">
+            <Icon name="heart" size={36} />
+          </span>
+        </div>
+        <div class="empty-copy">
+          <p class="eyebrow">Un lugar para tus próximos favoritos</p>
+          <h2 id="empty-title">Toda colección empieza con una historia.</h2>
+          <p>Pulsa el corazón de una ficha y tendrás un lugar al que volver.</p>
+          <a class="button button-primary" href="/catalogo/">
+            Explorar historias <Icon name="arrow" size={17} />
+          </a>
+          <p class="empty-local-note">Solo en este navegador · sin registro</p>
+        </div>
+      </section>
+      <noscript>
+        <p class="notice">
+          Activa JavaScript para consultar y guardar tu lista local. Puedes
+          seguir explorando el <a href="/catalogo/">catálogo de historias</a>.
+        </p>
+      </noscript>
     </div>
-    <div class="empty-state" id="favorites-empty" hidden>
-      <h2>Tu lista empieza con un descubrimiento.</h2>
-      <p>Pulsa el corazón de cualquier ficha para guardarla aquí.</p>
-      <a class="button button-primary" href="/catalogo/">
-        Explorar historias
-      </a>
-    </div>
-    <noscript>
-      <p class="notice">
-        Activa JavaScript para consultar y guardar tu lista local. Las fichas de
-        arriba permiten seguir explorando.
-      </p>
-    </noscript>
   </div>
 </BaseLayout>

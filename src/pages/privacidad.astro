@@ -1,5 +1,6 @@
 ---
 import LegalLayout from '../layouts/LegalLayout.astro';
+import { clientConfig } from '../data/site';
 ---
 
 <LegalLayout
@@ -19,13 +20,38 @@ import LegalLayout from '../layouts/LegalLayout.astro';
     No hay cuentas ni sincronización. Puedes borrar el historial desde el inicio
     y todos los datos desde los ajustes del navegador.
   </p>
+  <p>
+    Tema, favoritos e historial permanecen hasta que los borres o el navegador
+    elimine su almacenamiento. Se guardan por dominio y perfil del navegador; no
+    se trasladan automáticamente a otro dominio o dispositivo. Las búsquedas del
+    catálogo se resuelven en tu navegador. La API de metadatos se consulta al
+    compilar el sitio, no recibe tus búsquedas ni tu lista de favoritos.
+  </p>
   <h2>Anuncios y estadísticas</h2>
+  <p class="notice">
+    Estado de esta compilación: anuncios{' '}
+    {clientConfig.adsEnabled
+      ? 'configurados, sujetos a consentimiento'
+      : 'desactivados'}
+    ; analítica{' '}
+    {clientConfig.analyticsToken
+      ? 'configurada, sujeta a consentimiento'
+      : 'sin configurar'}
+    .
+  </p>
   <p>
     Google AdSense y Cloudflare Web Analytics están desactivados por defecto.
     Cuando estén configurados, sus scripts solo se cargan después de aceptar la
     categoría correspondiente. Rechazar bloquea ambas. Las preferencias caducan
     tras 180 días y pueden modificarse desde el pie; retirar el consentimiento
     recarga la página para detener recursos activos.
+  </p>
+  <p>
+    El código del sitio no crea cookies propias de seguimiento. Usa localStorage
+    para recordar las categorías elegidas y la fecha de la decisión. Tras 180
+    días vuelve a solicitarla; el navegador puede conservar la entrada antigua
+    hasta que se sustituya o borre. Esta preferencia no sustituye el tratamiento
+    que un proveedor externo pueda realizar al conectarse.
   </p>
   <p>
     Google puede tratar direcciones IP, identificadores y datos de navegación al
@@ -46,6 +72,15 @@ import LegalLayout from '../layouts/LegalLayout.astro';
     . Antes de activar AdSense donde Google lo exija, integra una plataforma de
     gestión de consentimiento certificada y su señal TCF.
   </p>
+  <h2>Plataforma de consentimiento</h2>
+  <p>
+    El banner de este sitio permite elegir categorías y no es una CMP
+    certificada. Cuando los anuncios estén configurados y se haya declarado
+    necesaria una CMP, su cargador se solicitará después de aceptar anuncios.
+    AdSense esperará además una señal TCF válida del proveedor configurado. La
+    analítica tiene su elección separada. El titular debe identificar la CMP,
+    sus proveedores y sus plazos antes de activar el servicio.
+  </p>
   <h2>Vídeos</h2>
   <p>
     No se conecta con YouTube hasta pulsar reproducir en una ficha con fuente
@@ -56,12 +91,27 @@ import LegalLayout from '../layouts/LegalLayout.astro';
     </a>
     . Las series ficticias no tienen reproductor activo.
   </p>
+  <p>
+    Pulsar reproducir es una acción separada de las preferencias de anuncios y
+    estadísticas. A partir de ese clic el navegador se comunica con YouTube y
+    puede enviar datos técnicos, como IP y dispositivo, según las políticas del
+    proveedor. Retirar el consentimiento de anuncios detiene sus scripts al
+    recargar, pero no borra las cookies o datos que ya conserve un tercero.
+  </p>
   <h2>Infraestructura y contacto</h2>
   <p>
     Cloudflare Pages puede procesar datos técnicos de las peticiones para servir
     y proteger el sitio. Al contactar por correo, la comunicación se usa para
     responder. El titular debe detallar la conservación y cómo ejercer los
     derechos que correspondan a su jurisdicción.
+  </p>
+  <p>
+    Esta política describe el código del repositorio. El equipo debe revisar
+    cualquier inyección adicional del alojamiento y sus registros técnicos; la
+    analítica automática del panel de Pages debe permanecer desactivada para
+    conservar el control de consentimiento del sitio. Consulta{' '}
+    <a href="/contacto/">Contacto</a>
+    para el canal disponible y el estado de su configuración.
   </p>
   <button class="button button-secondary" data-cookie-settings>
     Configurar preferencias

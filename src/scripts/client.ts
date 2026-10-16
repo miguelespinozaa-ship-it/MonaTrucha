@@ -62,12 +62,11 @@ function renderFavorites() {
       card.hidden = !favorites.includes(card.dataset['id'] || '');
     });
     const empty = document.getElementById('favorites-empty');
-    if (empty)
-      empty.hidden =
-        favorites.length > 0 &&
-        Array.from(
-          list.querySelectorAll<HTMLElement>('[data-series-card]'),
-        ).some((c) => !c.hidden);
+    const hasVisibleCards = Array.from(
+      list.querySelectorAll<HTMLElement>('[data-series-card]'),
+    ).some((card) => !card.hidden);
+    list.hidden = !hasVisibleCards;
+    if (empty) empty.hidden = hasVisibleCards;
   }
 }
 document
@@ -81,6 +80,12 @@ document
         : [...favorites, id];
       const saved = writeStored('yoru-favorites', favorites);
       renderFavorites();
+      if (button.closest('#favorites-list') && !favorites.includes(id)) {
+        const next = document.querySelector<HTMLElement>(
+          '#favorites-list [data-series-card]:not([hidden]) [data-favorite], #favorites-empty:not([hidden]) a',
+        );
+        next?.focus();
+      }
       announce(
         `${favorites.includes(id) ? 'Guardado en' : 'Eliminado de'} favoritos.${saved ? '' : ' Almacenamiento no disponible: solo se conserva en esta visita.'}`,
       );

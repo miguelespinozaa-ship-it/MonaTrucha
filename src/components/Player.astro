@@ -46,8 +46,8 @@ const { youtubeId, title, placeholder, legalUrl } = Astro.props;
   </div>
 </div>
 <p class="player-note">
-  <Icon name="external" size={16} />
   <a href={legalUrl} target="_blank" rel="noopener noreferrer">
+    <Icon name="external" size={16} />
     {placeholder
       ? 'Explorar una plataforma legal (no corresponde a esta ficción)'
       : 'Ver en la plataforma oficial'}

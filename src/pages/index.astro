@@ -65,9 +65,14 @@ const genres = ['Ciencia ficción', 'Fantasía', 'Drama', 'Aventura'];
             <Icon name="heart" />
           </button>
         </div>
+        <p class="hero-note">
+          {featured.data.placeholder
+            ? 'Una ficción de muestra. Sin episodios reales.'
+            : 'Consulta la fuente oficial y su disponibilidad.'}
+        </p>
       </div>
       <div class="hero-bottom">
-        <span>SELECCIÓN DE LA SEMANA</span>
+        <span>SELECCIÓN EDITORIAL</span>
         <span class="line" />
         <span class="hero-number">
           01{' '}

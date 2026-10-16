@@ -16,7 +16,11 @@ const { article, headingLevel: Heading = 'h3' } = Astro.props;
   >
     <Image
       src={article.data.cover}
-      alt="Ilustración original de una historia ficticia"
+      alt={
+        article.data.placeholder
+          ? 'Ilustración original de una historia ficticia'
+          : `Imagen editorial de ${article.data.title}`
+      }
       width={640}
       height={360}
       format="webp"

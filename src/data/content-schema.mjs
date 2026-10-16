@@ -66,6 +66,7 @@ export function seriesSchema(image) {
             message: 'La verificación requiere un vídeo.',
           });
         if (
+          !data.draft &&
           episode.youtubeId &&
           (!episode.verified ||
             !episode.officialChannel ||

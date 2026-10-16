@@ -349,6 +349,15 @@
     gap: 0.6rem;
     align-items: center;
   }
+  .hero-note {
+    margin: 16px 0 0;
+    color: #d5c8df;
+    font-size: 0.75rem;
+    max-width: 34ch;
+  }
+  .hero .small {
+    color: #ded2e6;
+  }
   .hero .favorite-button {
     position: static;
     width: 48px;
@@ -433,8 +442,21 @@
     scrollbar-color: var(--border) transparent;
   }
   .series-card {
+    --card-accent: #f18fbc;
     min-width: 0;
     scroll-snap-align: start;
+  }
+  .accent-blue {
+    --card-accent: #8bb8ef;
+  }
+  .accent-mint {
+    --card-accent: #9ad9c7;
+  }
+  .accent-amber {
+    --card-accent: #eac18e;
+  }
+  .accent-purple {
+    --card-accent: #bd9ce3;
   }
   .cover-wrap {
     position: relative;
@@ -442,6 +464,7 @@
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--surface);
+    box-shadow: var(--shadow);
   }
   .cover-wrap img {
     width: 100%;
@@ -468,17 +491,32 @@
     inset: 50% 0 0;
     background: linear-gradient(transparent, #111019e6);
   }
+  .cover-wrap::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 3px;
+    background: var(--card-accent);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero :focus-visible,
+  .player :focus-visible {
+    outline-color: #f18fbc;
+  }
   .cover-label {
     position: absolute;
     left: 0.7rem;
     top: 0.7rem;
-    font-size: 0.58rem;
+    font-size: 0.65rem;
     font-weight: 600;
     padding: 0.3rem 0.5rem;
     border-radius: 5px;
     background: #15101ede;
     color: #e8dfea;
     z-index: 1;
+    max-width: calc(100% - 1.4rem);
+    line-height: 1.4;
   }
   .favorite-button {
     background: #15101edb;
@@ -500,6 +538,18 @@
   }
   .favorite-button[aria-pressed='true'] path {
     fill: currentColor;
+  }
+  .favorite-button:hover,
+  .favorite-button:focus-visible {
+    border-color: var(--card-accent, #f18fbc);
+    background: #25162e;
+    color: #f7d7e9;
+  }
+  .card-title a:hover,
+  .card-title a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--accent);
   }
   .cover-caption {
     position: absolute;
@@ -735,6 +785,65 @@
   .empty-state h2 {
     color: var(--text);
   }
+  .favorites-stage {
+    min-height: 380px;
+  }
+  .favorites-empty {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    align-items: center;
+    gap: 48px;
+    padding: 48px;
+    min-height: 380px;
+    margin: 0;
+    text-align: left;
+    border-style: solid;
+    background:
+      radial-gradient(
+        ellipse at top left,
+        color-mix(in srgb, var(--accent) 8%, transparent),
+        transparent 70%
+      ),
+      var(--surface);
+  }
+  .empty-copy {
+    max-width: 480px;
+  }
+  .empty-copy h2 {
+    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  }
+  .empty-copy .empty-local-note {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+  }
+  .empty-collection {
+    position: relative;
+    width: 190px;
+    height: 180px;
+  }
+  .empty-card {
+    position: absolute;
+    top: 22px;
+    left: 42px;
+    width: 108px;
+    height: 140px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface-raised);
+    transform: translateX(-24px) rotate(-14deg);
+  }
+  .empty-card:nth-child(2) {
+    transform: translateX(24px) rotate(14deg);
+  }
+  .empty-card:last-child {
+    transform: none;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: var(--surface);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
   .breadcrumbs {
     display: flex;
     flex-wrap: wrap;
@@ -952,7 +1061,15 @@
     margin: 20px 0;
   }
   .player-note a {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    max-width: 100%;
     text-decoration: underline;
+  }
+  .player-note a svg {
+    flex-shrink: 0;
+    margin-top: 0.15em;
   }
   .player-note span {
     margin-left: auto;
@@ -1315,7 +1432,7 @@
       );
     }
     .hero-copy {
-      padding: 245px 24px 56px;
+      padding: 220px 24px 64px;
       max-width: 100%;
     }
     .hero .eyebrow {
@@ -1379,7 +1496,7 @@
       bottom: 14px;
     }
     .cover-label {
-      font-size: 0.52rem;
+      font-size: 0.6rem;
       left: 8px;
     }
     .series-card .card-title {
@@ -1451,6 +1568,20 @@
     .catalog-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 24px 14px;
+    }
+    .favorites-stage {
+      min-height: 480px;
+    }
+    .favorites-empty {
+      min-height: 480px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .empty-collection {
+      margin-inline: auto;
+      height: 165px;
     }
     .page-heading {
       padding-top: 36px;
