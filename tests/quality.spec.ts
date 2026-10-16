@@ -74,43 +74,52 @@ test('reduced-motion desactiva desplazamiento suave y transiciones en cinco plan
     expect(durations.every(Boolean)).toBe(true);
   }
 });
-test('cinco plantillas sin desbordamiento y capturas para revisión visual', async ({
+test('seis vistas en ambos temas, sin desbordamiento y con capturas', async ({
   page,
 }, testInfo) => {
   await mkdir('.cache/visual', { recursive: true });
-  for (const [name, path] of templates) {
-    await page.goto(path);
-    const reject = page.getByRole('button', { name: 'Rechazar', exact: true });
-    if (await reject.isVisible()) await reject.click();
-    await page.evaluate(async () => {
-      await document.fonts.ready;
-    });
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
-    ).toBe(true);
-    await page.locator('img').evaluateAll((elements) =>
-      Promise.all(
-        elements.map(async (element) => {
-          const image = element as HTMLImageElement;
-          image.loading = 'eager';
-          await image.decode().catch(() => undefined);
-        }),
-      ),
-    );
-    await page.screenshot({
-      path: `.cache/visual/${testInfo.project.name}-${name}.png`,
-      fullPage: true,
-      animations: 'disabled',
-    });
-    if (name === 'episodio') {
-      const alternative = page.locator('.player-note a');
-      await alternative.focus();
-      await page.keyboard.press('Tab');
-      await expect(
-        page.getByRole('link', { name: 'Todos los episodios' }),
-      ).toBeFocused();
+  const views = [...templates, ['favoritos', '/favoritos/']] as const;
+  for (const theme of ['dark', 'light']) {
+    for (const [name, path] of views) {
+      await page.goto(path);
+      const reject = page.getByRole('button', {
+        name: 'Rechazar',
+        exact: true,
+      });
+      if (await reject.isVisible()) await reject.click();
+      await page.evaluate(async (theme) => {
+        document.documentElement.dataset['theme'] = theme;
+        localStorage.setItem('yoru-theme', theme);
+        await document.fonts.ready;
+      }, theme);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      await page.locator('img').evaluateAll((elements) =>
+        Promise.all(
+          elements.map(async (element) => {
+            const image = element as HTMLImageElement;
+            image.loading = 'eager';
+            await image.decode().catch(() => undefined);
+          }),
+        ),
+      );
+      await page.screenshot({
+        path: `.cache/visual/${testInfo.project.name}-${name}-${theme}.png`,
+        fullPage: true,
+        animations: 'disabled',
+      });
+      if (name === 'episodio') {
+        await page.locator('.player-note a').focus();
+        await page.keyboard.press('Tab');
+        await expect(
+          page.getByRole('link', { name: 'Todos los episodios' }),
+        ).toBeFocused();
+      }
+      if (name === 'favoritos')
+        await expect(page.locator('#favorites-empty')).toBeVisible();
     }
   }
 });

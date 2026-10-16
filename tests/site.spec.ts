@@ -65,6 +65,9 @@ test('favoritos persistentes y eliminación', async ({ page }) => {
     .getByRole('button', { name: 'Quitar Ecos de neón de favoritos' })
     .click();
   await expect(page.locator('#favorites-empty')).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Explorar historias', exact: true }),
+  ).toBeFocused();
 });
 test('episodios sin vídeo falso e historial local', async ({ page }) => {
   await page.goto('/episodios/ecos-de-neon/1/');
